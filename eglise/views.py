@@ -2,6 +2,7 @@ from django.shortcuts import render  , redirect
 from django.contrib.auth import authenticate , login as auth , logout 
 from django.contrib.auth.decorators import login_required 
 from .forms import *
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -38,7 +39,7 @@ def deco(request):
 @login_required()
 def panel(request):
 
-    # userCount = User.objects.count()
+    userCount = User.objects.count()
     # patientCount = Patient.objects.count()
     # myUser = Fonction.objects.filter(user_fonction = request.user).first()
     
@@ -54,5 +55,5 @@ def panel(request):
         
     #     }
 
-    return render(request, 'back/index.html') 
+    return render(request, 'back/index.html', {'userCount': userCount}) 
 
