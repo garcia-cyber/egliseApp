@@ -85,3 +85,16 @@ LOGIN_URL = '/login/' # Ajusté car '//' n'est pas une route valide
 LOGOUT_REDIRECT_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# # À ajouter tout en bas de settings.py
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://*.herokuapp.com", 
+#     "https://*.render.com",
+#     "https://ton-domaine.com" # Si tu as un nom de domaine à toi
+# ]
+
+# Configuration pour Render (domaine gratuit)
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+]
