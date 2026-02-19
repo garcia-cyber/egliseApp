@@ -8,4 +8,5 @@ urlpatterns = [
     path('panel/', panel , name = 'panel') , 
     path('', home , name ='home') , 
     path('utilisateurAdd/', utilisateurAdd ,  name ='utilisateurAdd') , 
+    path('utilisateurRead/', utilisateurRead ,  name ='utilisateurRead') , 
 ]

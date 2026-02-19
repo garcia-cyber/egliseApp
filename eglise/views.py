@@ -58,8 +58,20 @@ def utilisateurAdd(request):
     if request.method == 'POST':
         form = UtilisateurForm(request.POST) 
         if form.is_valid():
-            form.save() 
+            user = form.save(commit= False) 
+            user.set_password(form.cleaned_data['password']) 
+            user.save()
+            
             msg = "information enregistre"
+            form = UtilisateurForm(request.POST) 
     
     form = UtilisateurForm()
     return render(request, 'back/employeAdd.html', {'form':form, 'msg': msg}) 
+
+# =================================================================
+# iste des utilisateurs 
+# =================================================================
+@login_required()
+def utilisateurRead(request):
+    lst = User.objects.all()
+    return render(request , 'back/employeRead.html', {'lst': lst})
