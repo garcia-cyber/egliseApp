@@ -31,3 +31,14 @@ class Profil(models.Model):
     def __str__(self):
         return self.phone 
     
+# =================================
+# departement 
+# =================================
+class Departement(models.Model):
+    nomDepartement = models.CharField(max_length=30) 
+
+    def __str__(self):
+        return self.nomDepartement
+
+
+ 

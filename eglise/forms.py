@@ -25,7 +25,7 @@ class LoginForm(forms.Form):
 # employes add   
 # ===========================================
 
-class EmployeForm(forms.ModelForm):
+class UtilisateurForm(forms.ModelForm):
     password = forms.CharField(max_length=200 , widget= forms.PasswordInput(attrs={'class':'form-control'}), label='mot de passe utilisateur') 
 
     class  Meta:

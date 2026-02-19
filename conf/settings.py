@@ -82,7 +82,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # --- REDIRECTIONS ---
 LOGIN_REDIRECT_URL = '/panel/' 
 LOGIN_URL = '/login/' # Ajusté car '//' n'est pas une route valide
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/home/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

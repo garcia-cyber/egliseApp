@@ -7,6 +7,12 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 #==============================================================
+# home
+# =============================================================
+def home(request):
+    return render(request , 'front/index.html')
+
+#==============================================================
 # login 
 # =============================================================
 def login(request):
@@ -31,7 +37,7 @@ def login(request):
 # ============================================================
 def deco(request):
     logout(request)
-    return redirect('/')
+    return redirect('home')
 
 # ============================================================
 # panel controle 
@@ -40,20 +46,20 @@ def deco(request):
 def panel(request):
 
     userCount = User.objects.count()
-    # patientCount = Patient.objects.count()
-    # myUser = Fonction.objects.filter(user_fonction = request.user).first()
-    
-    
-
-    # # fonction
-    # fonction = myUser.fonction.type_fonction if myUser else None 
-
-    # context = {
-    #     'fonction':fonction ,
-    #     'userCount':userCount ,
-    #     'patientCount':patientCount ,  
-        
-    #     }
 
     return render(request, 'back/index.html', {'userCount': userCount}) 
 
+# ============================================================
+# add employe 
+# =============================================================
+@login_required()
+def utilisateurAdd(request):
+    msg = None 
+    if request.method == 'POST':
+        form = UtilisateurForm(request.POST) 
+        if form.is_valid():
+            form.save() 
+            msg = "information enregistre"
+    
+    form = UtilisateurForm()
+    return render(request, 'back/employeAdd.html', {'form':form, 'msg': msg}) 
