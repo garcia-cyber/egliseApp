@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms 
+from .models import Profil 
 
 
 # creation du formulaire d'authentification 
@@ -9,21 +10,9 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length = 30 , widget = forms.TextInput(attrs={'class':'form-control'})) 
     password = forms.CharField(max_length = 200 , widget = forms.PasswordInput(attrs={'class':'form-control'})) 
 
-
-# creaation du formulaire de type de fonction  
-# ===========================================
-# ===========================================
-# class TypeFonctionForm(forms.ModelForm):
-#     class Meta :
-#         model = TypeFonction
-#         fields = ['type_fonction'] 
-#         widgets = {
-#             'type_fonction': forms.TextInput(attrs={'class': 'form-control'})
-#         }
-
-# ===========================================
-# employes add   
-# ===========================================
+# ===============================================
+#  
+# ===============================================
 
 class UtilisateurForm(forms.ModelForm):
     password = forms.CharField(max_length=200 , widget= forms.PasswordInput(attrs={'class':'form-control'}), label='mot de passe utilisateur') 
@@ -43,3 +32,20 @@ class UtilisateurForm(forms.ModelForm):
             'password': 'mot de passe utilisateur' , 
 
         }  
+
+# =====================================================
+#  form profile 
+# =====================================================
+
+class ProfilForm(forms.ModelForm):
+    class Meta :
+        model = Profil 
+        fields = ['fonction','cellule','phone','sexeUser','user']
+        widgets = {
+            'user': forms.Select(attrs={'class':'form-control'}) ,
+            'fonction': forms.Select(attrs={'class':'form-control'}) ,
+            'cellule': forms.Select(attrs={'class':'form-control'}) ,
+            'phone': forms.TextInput(attrs={'class':'form-control'}) ,
+            'sexeUser': forms.Select(attrs={'class':'form-control'}) , 
+            
+        } 

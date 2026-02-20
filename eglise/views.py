@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate , login as auth , logout
 from django.contrib.auth.decorators import login_required 
 from .forms import *
 from django.contrib.auth.models import User
+from .models import * 
 
 # Create your views here.
 
@@ -45,9 +46,12 @@ def deco(request):
 @login_required()
 def panel(request):
 
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
     userCount = User.objects.count()
 
-    return render(request, 'back/index.html', {'userCount': userCount}) 
+    return render(request, 'back/index.html', {'userCount': userCount ,'fonction':fonction}) 
 
 # ============================================================
 # add employe 
@@ -64,14 +68,42 @@ def utilisateurAdd(request):
             
             msg = "information enregistre"
             form = UtilisateurForm(request.POST) 
-    
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
     form = UtilisateurForm()
-    return render(request, 'back/employeAdd.html', {'form':form, 'msg': msg}) 
+    return render(request, 'back/employeAdd.html', {'form':form, 'msg': msg, 'fonction':fonction})  
 
 # =================================================================
-# iste des utilisateurs 
+# liste des utilisateurs 
 # =================================================================
 @login_required()
 def utilisateurRead(request):
     lst = User.objects.all()
-    return render(request , 'back/employeRead.html', {'lst': lst})
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    return render(request , 'back/employeRead.html', {'lst': lst, 'fonction':fonction})
+
+# =================================================================
+# attribue profil  
+# =================================================================
+@login_required()
+def profilAdd(request):
+  
+    msg = None 
+    if request.method == 'POST':
+        form = ProfilForm(request.POST) 
+
+        if form.is_valid():
+            form.save()
+            
+            
+            msg = "profil ajouter"
+
+
+    form = ProfilForm() 
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    return render(request , 'back/employeUpdate.html',{'fonction':fonction,'form':form, 'msg':msg}) 

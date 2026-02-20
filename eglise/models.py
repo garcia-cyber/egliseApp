@@ -26,10 +26,16 @@ class Profil(models.Model):
     fonction = models.ForeignKey(Fonction , on_delete=models.CASCADE ) 
     cellule  = models.ForeignKey(Cellule , on_delete= models.CASCADE) 
     phone = models.IntegerField()
+    TYPESEXE = [
+        ('masculin','Masculin') , 
+        ('feminin' , 'Feminin')
+    ]
+    sexeUser = models.CharField(max_length =15 , choices  = TYPESEXE , null = True)
+
 
 
     def __str__(self):
-        return self.phone 
+        return self.sexeUser
     
 # =================================
 # departement 
