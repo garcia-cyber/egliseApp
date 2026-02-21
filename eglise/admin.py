@@ -28,4 +28,11 @@ class CelluleAdmin(admin.ModelAdmin):
 class ProfilAdmin(admin.ModelAdmin):
 	list_display = ['user','user__email','fonction','phone','sexeUser'] 
 
+# =======================================
+#  departement
+# =======================================
+@admin.register(Departement)
+class DepartementAdmin(admin.ModelAdmin):
+	list_display = ['nomDepartement']
+
 

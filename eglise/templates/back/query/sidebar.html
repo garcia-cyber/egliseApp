@@ -26,8 +26,7 @@
                     <li><a class="nav-link" href="{% url "utilisateurRead" %}">Liste des utiisateurs</a></li>
                 </ul>
                 </li>
-                {% endif %}
-
+                {% elif fonction == 'sous-admin'%}
                  <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="briefcase"></i><span>Membres</span></a>
@@ -36,6 +35,9 @@
                     <li><a class="nav-link" href="">Liste des utiisateurs</a></li>
                 </ul>
                 </li>
+                {% endif %}
+
+                
                 {% comment %} gestion des patients {% endcomment %}
 
                

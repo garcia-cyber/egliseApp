@@ -60,11 +60,14 @@ class Membre(models.Model):
     sexe = models.CharField(max_length = 15 , choices = TYPESEXE) 
     phone = models.IntegerField()   
     adresse = models.CharField(max_length = 80 , null = True ) 
+    province = models.CharField(max_length = 40 , null = True)
+    userMembre = models.ForeignKey(User , on_delete = models.CASCADE , null = True)  
+    departement = models.ForeignKey(Departement, on_delete = models.CASCADE , null = True) 
+
 
 
     def __str__(self):
         return self.noms
-# =====================
 
 
  

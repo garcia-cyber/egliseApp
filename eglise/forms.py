@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django import forms 
 from .models import Profil 
+from .models import *
 
 
 # creation du formulaire d'authentification 
@@ -49,3 +50,17 @@ class ProfilForm(forms.ModelForm):
             'sexeUser': forms.Select(attrs={'class':'form-control'}) , 
             
         } 
+
+
+# =====================================================
+#  form membre
+# =====================================================
+class MembreForm(forms.ModelForm):
+    class Meta :
+        model = Membre 
+        fields = ['noms','sexe','phone','adresse','province','departement']
+
+        widgets = {
+            'noms' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'sexe' : forms.Select(attrs={'class':'form-control'}) ,
+        }
