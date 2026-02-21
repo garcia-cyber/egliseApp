@@ -11,4 +11,5 @@ urlpatterns = [
     path('utilisateurRead/', utilisateurRead ,  name ='utilisateurRead') , 
     path('profilAdd/', profilAdd,  name ='profilAdd') , 
     path('membreAdd/', membreAdd , name = 'membreAdd') , 
+    path('membreRead/', membreRead , name = 'membreRead') , 
 ]

@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Patient liste</title>
+  <title>Membre liste</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{% static 'back/assets/css/app.min.css'%}">
   <!-- Template CSS -->
@@ -35,7 +35,7 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Liste des employes</h4>
+                    <h4>Liste des membres</h4> 
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -46,12 +46,9 @@
                             <th>id</th>
                             <th>Noms</th>
                             <th>sexe</th>
-                            <th>age</th>
+                            <th>phone</th>
                             <th>adresse</th>
-                            <th>poids</th>
-                            <th>date d'enregistrement</th>
-                            <th>phone responsable</th>
-                            <th>employes</th>
+                            <th>province</th>     
                             <th>Traitements</th>
                             
                           </tr>
@@ -63,12 +60,12 @@
                             <td>{{listes.id}}</td>
                             <td>{{listes.noms}}</td>
                             <td>{{listes.sexe}}</td>
-                            <td>{{listes.age}}</td>
+                             <td>{{listes.phone}}</td>
                             <td>{{listes.adresse}}</td>
-                            <td>{{listes.poids}}</td>
-                            <td>{{listes.dateEn}}</td>
-                            <td>{{listes.phone_responsable}}</td>
-                            <td>{{listes.userPatient}}</td>
+                            <td>{{listes.province}}</td>
+                            
+                            
+                            
                             <td>
                               <a href="" class="btn btn-primary">modifier</a>
                             </td>

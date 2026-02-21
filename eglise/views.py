@@ -50,21 +50,63 @@ def panel(request):
     fonction = profil.fonction.nomFonction if profil else None 
     # =============================
     # nombre user systeme
+    # ============================
     userCount = User.objects.count()
 
-    # =============================
+    # ==================================
     # nombre de membre chez admin central 
+    # ===================================
     membreCount = Membre.objects.count()
 
+    # =================== CELLULE NOMBRES ======================
+
     # =============================
-    # NOMBRE PAR CELLULE 
+    # NOMBRE MEMBRE PAR CELLULE 
+    # =============================
     cellule = Membre.objects.filter(userMembre = request.user).count()
+
+    # =============================
+    #  NOMBRE DES HOMMES
+    # =============================
+
+    hommeC = Membre.objects.filter(userMembre = request.user , sexe = 'Masculin', typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES FEMMES
+    # =============================
+    femmeC = Membre.objects.filter(userMembre = request.user , sexe = 'Feminin', typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES MARIES
+    # ============================= 
+    marieC = Membre.objects.filter(userMembre = request.user , etatCivil = 'marie' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES CELIBATEURS
+    # ============================= 
+    celibateurC =  Membre.objects.filter(userMembre = request.user , etatCivil = 'celibateur' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES VEUVES
+    # ============================= 
+    veuveC = Membre.objects.filter(userMembre = request.user , etatCivil = 'veuve' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES VEUF
+    # ============================= 
+    veufC = Membre.objects.filter(userMembre = request.user , etatCivil = 'veuf' , typeM = 'membre').count()
 
     context = {
         'userCount': userCount ,
         'fonction':fonction , 
         'membre' : membreCount , 
         'cellule' : cellule , 
+        'hommeC'  : hommeC ,
+        'femmeC' : femmeC , 
+        'celibateurC' : celibateurC ,
+        'marieC' : marieC,
+        'veuveC'   : veuveC ,
+        'veufC' : veufC ,
         }
     return render(request, 'back/index.html', context) 
 
@@ -151,3 +193,17 @@ def membreAdd(request):
     fonction = profil.fonction.nomFonction if profil else None 
 
     return render(request, 'back/membreAdd.html',{'fonction':fonction , 'msg':msg , 'form': form}) 
+
+
+# ==================================================================
+#  liste des membres
+# ==================================================================
+@login_required()
+def membreRead(request):
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    lst = Membre.objects.filter(userMembre = request.user).all()
+
+    return render(request , 'back/membreRead.html',{'fonction':fonction , 'lst': lst})   

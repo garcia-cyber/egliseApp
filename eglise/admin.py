@@ -41,4 +41,11 @@ class DepartementAdmin(admin.ModelAdmin):
 # =======================================
 @admin.register(Membre)
 class MembreAdmin(admin.ModelAdmin):
-	list_display = ['noms','sexe','phone','adresse','province','departement','userMembre']
+	list_display = ['noms','sexe','etatCivil','phone','adresse','province','departement','typeM','deces','userMembre']
+
+# =======================================
+#  type de cotisation  
+# =======================================
+@admin.register(TypeCotisation)
+class TypeCotisationAdmin(admin.ModelAdmin):
+	list_display = ['typeCotisation'] 

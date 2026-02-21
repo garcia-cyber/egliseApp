@@ -63,11 +63,42 @@ class Membre(models.Model):
     province = models.CharField(max_length = 40 , null = True)
     userMembre = models.ForeignKey(User , on_delete = models.CASCADE , null = True)  
     departement = models.ForeignKey(Departement, on_delete = models.CASCADE , null = True) 
+    TYPEETAT = [
+                ('marie','Marie') ,
+                ('celibateur' , 'Celibateur') , 
+                ('veuve' , 'Veuve') ,
+                ('divorce' , 'Divorce') , 
+                ('veuf' , 'Veuf') 
+            ]
+    etatCivil   = models.CharField(max_length = 30 , choices = TYPEETAT , null = True)  
+    deces = models.CharField(max_length = 30 , default = 'non', null = True)
+    typeM = models.CharField(max_length = 30 , default = 'membre', null = True) 
 
 
 
     def __str__(self):
         return self.noms
 
+# ================================
+# models cotication type
+# ================================
+class TypeCotisation(models.Model):
+    typeCotisation = models.CharField(max_length= 40 )
 
+
+    def __str__(self):
+        return self.typeCotisation 
+# ================================
+# models cotication
+# ================================
+class Cotisation(models.Model):
+    cotisation = models.ForeignKey(TypeCotisation, on_delete = models.CASCADE) 
+    montant  = models.DecimalField(max_digits=10 ,decimal_places= 2) 
+    statut   = models.CharField(default = 'oui')
+    dateCotisation = models.DateField(null = True) 
+    userCotisation = models.ForeignKey(User , on_delete = models.CASCADE , null = True) 
+
+
+    def __str__(self):
+        return self.statut 
  
