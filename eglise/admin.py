@@ -36,3 +36,9 @@ class DepartementAdmin(admin.ModelAdmin):
 	list_display = ['nomDepartement']
 
 
+# =======================================
+#  membre 
+# =======================================
+@admin.register(Membre)
+class MembreAdmin(admin.ModelAdmin):
+	list_display = ['noms','sexe','phone','adresse','province','departement','userMembre']

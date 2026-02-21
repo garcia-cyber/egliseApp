@@ -63,4 +63,8 @@ class MembreForm(forms.ModelForm):
         widgets = {
             'noms' : forms.TextInput(attrs={'class':'form-control'}) ,
             'sexe' : forms.Select(attrs={'class':'form-control'}) ,
+            'phone' : forms.NumberInput(attrs={'class':'form-control'}) ,
+            'adresse' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'province' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'departement' : forms.Select(attrs={'class':'form-control'}) ,
         }

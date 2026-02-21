@@ -10,4 +10,5 @@ urlpatterns = [
     path('utilisateurAdd/', utilisateurAdd ,  name ='utilisateurAdd') , 
     path('utilisateurRead/', utilisateurRead ,  name ='utilisateurRead') , 
     path('profilAdd/', profilAdd,  name ='profilAdd') , 
+    path('membreAdd/', membreAdd , name = 'membreAdd') , 
 ]

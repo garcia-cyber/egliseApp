@@ -48,10 +48,25 @@ def panel(request):
 
     profil = Profil.objects.filter(user = request.user).first()
     fonction = profil.fonction.nomFonction if profil else None 
-
+    # =============================
+    # nombre user systeme
     userCount = User.objects.count()
 
-    return render(request, 'back/index.html', {'userCount': userCount ,'fonction':fonction}) 
+    # =============================
+    # nombre de membre chez admin central 
+    membreCount = Membre.objects.count()
+
+    # =============================
+    # NOMBRE PAR CELLULE 
+    cellule = Membre.objects.filter(userMembre = request.user).count()
+
+    context = {
+        'userCount': userCount ,
+        'fonction':fonction , 
+        'membre' : membreCount , 
+        'cellule' : cellule , 
+        }
+    return render(request, 'back/index.html', context) 
 
 # ============================================================
 # add employe 
@@ -107,3 +122,32 @@ def profilAdd(request):
     fonction = profil.fonction.nomFonction if profil else None 
 
     return render(request , 'back/employeUpdate.html',{'fonction':fonction,'form':form, 'msg':msg}) 
+
+# ==================================================================
+#  enregistrement des membres
+# ==================================================================
+@login_required()
+def membreAdd(request):
+    msg = None 
+    if request.method == 'POST':
+        form = MembreForm(request.POST)
+        if form.is_valid():
+            membre = form.save(commit = False) 
+            if request.user.is_authenticated:
+                membre.userMembre = request.user
+                membre.save()
+                msg = 'membre enregistre '
+                form = MembreForm(request.POST)
+            else:
+                msg = "erreur" 
+
+    
+
+   
+
+    form = MembreForm()
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    return render(request, 'back/membreAdd.html',{'fonction':fonction , 'msg':msg , 'form': form}) 
