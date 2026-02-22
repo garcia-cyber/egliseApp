@@ -49,3 +49,21 @@ class MembreAdmin(admin.ModelAdmin):
 @admin.register(TypeCotisation)
 class TypeCotisationAdmin(admin.ModelAdmin):
 	list_display = ['typeCotisation'] 
+
+
+# =======================================
+#  cotisations 
+# =======================================
+@admin.register(Cotisation)
+class CotisationAdmin(admin.ModelAdmin):
+	list_display = ['cotisation','montant','dateCotisation','userCotisation','membreCotisation'] 
+
+# =======================================
+#  evenement 
+# =======================================
+@admin.register(Evenement)
+class EvenementAdmin(admin.ModelAdmin):
+	list_display = ['nomEvenement','dateEvenement','userEvenement']
+
+
+

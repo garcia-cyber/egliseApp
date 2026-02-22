@@ -92,13 +92,31 @@ class TypeCotisation(models.Model):
 # models cotication
 # ================================
 class Cotisation(models.Model):
-    cotisation = models.ForeignKey(TypeCotisation, on_delete = models.CASCADE) 
+    cotisation = models.ForeignKey(TypeCotisation, on_delete = models.CASCADE , null = True) 
     montant  = models.DecimalField(max_digits=10 ,decimal_places= 2) 
     statut   = models.CharField(default = 'oui')
     dateCotisation = models.DateField(null = True) 
     userCotisation = models.ForeignKey(User , on_delete = models.CASCADE , null = True) 
+    TYPEDEVISE = [
+        ('cdf','Cdf') ,
+        ('usd' , 'Usd')
+    ]
+    devise = models.CharField(max_length = 10 , null = True , choices = TYPEDEVISE , default = 'cdf') 
+    membreCotisation = models.ForeignKey(Membre , on_delete = models.CASCADE, null = True ) 
 
 
     def __str__(self):
         return self.statut 
+
+# ===============================
+#  evenement 
+# ===============================
+class Evenement(models.Model):
+    nomEvenement = models.CharField(max_length = 50)
+    dateEvenement = models.DateField()
+    userEvenement = models.ForeignKey(User , on_delete = models.CASCADE)
+
+    def __str__(self):
+        return self.nomEvenement 
+
  

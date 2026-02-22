@@ -69,3 +69,24 @@ class MembreForm(forms.ModelForm):
             'province' : forms.TextInput(attrs={'class':'form-control'}) ,
             'departement' : forms.Select(attrs={'class':'form-control'}) ,
         }
+
+# ====================================
+# evenement form 
+# ===================================
+class EvenementForm(forms.ModelForm):
+    class Meta :
+        model   = Evenement 
+        fields  = ['nomEvenement','dateEvenement']
+        widgets = {
+            'nomEvenement' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'dateEvenement' : forms.DateInput(attrs={'type' :'date','class':'form-control'}) 
+        } 
+
+
+    # def clean_nomEvenement(self):
+    #     nomEvenement = self.cleaned_data.get("nomEvenement")
+
+    #     if Evenement.objects.filter(nomEvenement = nomEvenement).exist():
+    #         raise forms.ValidationError("le nom Evenement existe")
+
+    #     return nomEvenement

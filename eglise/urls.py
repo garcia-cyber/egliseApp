@@ -12,4 +12,6 @@ urlpatterns = [
     path('profilAdd/', profilAdd,  name ='profilAdd') , 
     path('membreAdd/', membreAdd , name = 'membreAdd') , 
     path('membreRead/', membreRead , name = 'membreRead') , 
+    path('evenementAdd/', evenementAdd , name = 'evenementAdd') , 
+    path('evenementRead/', evenementRead , name = 'evenementRead') , 
 ]

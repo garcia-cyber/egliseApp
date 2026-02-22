@@ -58,6 +58,43 @@ def panel(request):
     # ===================================
     membreCount = Membre.objects.count()
 
+    # =============================
+    #  NOMBRE DES HOMMES
+    # =============================
+
+    homme = Membre.objects.filter( sexe = 'Masculin', typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES FEMMES
+    # =============================
+    femme = Membre.objects.filter( sexe = 'Feminin', typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES MARIES
+    # ============================= 
+    marie = Membre.objects.filter(etatCivil = 'marie' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES CELIBATEURS
+    # ============================= 
+    celibateur =  Membre.objects.filter(etatCivil = 'celibateur' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES VEUVES
+    # ============================= 
+    veuve = Membre.objects.filter(etatCivil = 'veuve' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES VEUF
+    # ============================= 
+    veuf = Membre.objects.filter(etatCivil = 'veuf' , typeM = 'membre').count()
+
+    # =============================
+    #  NOMBRE DES EVENEMENT
+    # ============================= 
+    evenement = Evenement.objects.count()
+
+
     # =================== CELLULE NOMBRES ======================
 
     # =============================
@@ -96,6 +133,12 @@ def panel(request):
     # ============================= 
     veufC = Membre.objects.filter(userMembre = request.user , etatCivil = 'veuf' , typeM = 'membre').count()
 
+    # =============================
+    #  NOMBRE DES EVENEMENT C
+    # ============================= 
+    evenementC = Evenement.objects.filter(userEvenement = request.user).count()
+
+
     context = {
         'userCount': userCount ,
         'fonction':fonction , 
@@ -107,6 +150,14 @@ def panel(request):
         'marieC' : marieC,
         'veuveC'   : veuveC ,
         'veufC' : veufC ,
+        'homme'  : homme ,
+        'femme' : femme , 
+        'celibateur' : celibateur ,
+        'marie' : marie,
+        'veuve'   : veuve ,
+        'veuf' : veuf ,
+        'evenement':evenement , 
+        'evenementC' : evenementC
         }
     return render(request, 'back/index.html', context) 
 
@@ -182,11 +233,6 @@ def membreAdd(request):
                 form = MembreForm(request.POST)
             else:
                 msg = "erreur" 
-
-    
-
-   
-
     form = MembreForm()
 
     profil = Profil.objects.filter(user = request.user).first()
@@ -206,4 +252,42 @@ def membreRead(request):
 
     lst = Membre.objects.filter(userMembre = request.user).all()
 
-    return render(request , 'back/membreRead.html',{'fonction':fonction , 'lst': lst})   
+    return render(request , 'back/membreRead.html',{'fonction':fonction , 'lst': lst})  
+
+# ==================================================================
+#  add evenement 
+# ==================================================================
+@login_required()
+def evenementAdd(request):
+    msg = None
+    if request.method == 'POST':
+        form = EvenementForm(request.POST)
+        if form.is_valid():
+            use = form.save(commit = False)
+
+            if request.user.is_authenticated :
+                use.userEvenement = request.user 
+                use.save()
+                msg = "evenement enregistre"
+
+
+
+    form = EvenementForm()
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    return render(request , 'back/evenementAdd.html',{'fonction':fonction, 'form':form , 'msg':msg})  
+
+# ==================================================================
+#  read evenement 
+# ==================================================================
+login_required()
+def evenementRead(request):
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    lst = Evenement.objects.filter(userEvenement = request.user).all()
+
+    return render(request , 'back/evenementRead.html' , {'fonction':fonction, 'lst':lst})
