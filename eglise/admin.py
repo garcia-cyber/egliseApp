@@ -65,5 +65,18 @@ class CotisationAdmin(admin.ModelAdmin):
 class EvenementAdmin(admin.ModelAdmin):
 	list_display = ['nomEvenement','dateEvenement','userEvenement']
 
+# =======================================
+# type de permission
+# =======================================
+@admin.register(TypePermission)
+class TypePermissionAdmin(admin.ModelAdmin):
+	list_display = ['typePermission']
+
+# ======================================
+# permission 
+# ======================================
+@admin.register(Permission)
+class PermissionAdmin(admin.ModelAdmin):
+	list_display = ['permission','userPermission','datePermission']
 
 

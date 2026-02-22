@@ -496,5 +496,7 @@ def usd(request):
                 'donA': donA ,
                 }
 
-    return render(request, 'back/usd.html' , context)
+    return render(request, 'back/usd.html' , context) 
+
+
 

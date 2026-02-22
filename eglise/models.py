@@ -152,5 +152,22 @@ class Bloque(models.Model):
     def __str__(self):
         return self.statutB 
 
+# ===================================
+# materiels
+# ===================================
+class Materiel(models.Model):
+    nomMateriel = models.CharField(max_length = 50 , null = True) 
+    ETATCHOIX = [
+        ('tres bon','Tres Bon') , 
+        ('bon' , 'Bon') , 
+        ('panne' , 'Panne')
 
+    ]
+    etatMateriel = models.CharField(max_length = 30 , choices = ETATCHOIX, null = True)
+    dateRegister = models.DateField(auto_now_add = True)  
+    quantiteMateriel = models.IntegerField()
+
+
+    def __str__(self):
+        return self.nomMateriel
  
