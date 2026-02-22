@@ -119,4 +119,38 @@ class Evenement(models.Model):
     def __str__(self):
         return self.nomEvenement 
 
+# ===============================
+# permission 
+# ================================
+class TypePermission(models.Model):
+    typePermission = models.CharField(max_length = 40 , null = True)
+
+    def __str__(self):
+        return self.typePermission 
+# ================================
+#  permission 
+# ================================
+class Permission(models.Model):
+    permission = models.ForeignKey(TypePermission , on_delete = models.CASCADE) 
+    userPermission = models.ForeignKey(User , on_delete = models.CASCADE) 
+    statutP = models.CharField(max_length = 3 , null = True , default = 'oui')
+    datePermission = models.DateField()
+
+    def __str__(self):
+        return self.statutP
+
+# =================================
+# bloquer user
+# =================================
+class Bloque(models.Model):
+    CHOIXB = [
+    ('active', 'Active') , 
+    ('bloque','Bloque')]
+    statutB = models.CharField(max_length = 15 , choices = CHOIXB) 
+    userBloque = models.ForeignKey(User , on_delete = models.CASCADE) 
+
+    def __str__(self):
+        return self.statutB 
+
+
  

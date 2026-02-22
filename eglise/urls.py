@@ -15,5 +15,6 @@ urlpatterns = [
     path('evenementAdd/', evenementAdd , name = 'evenementAdd') , 
     path('evenementRead/', evenementRead , name = 'evenementRead') , 
     path('cotisationAdd/', cotisationAdd , name = 'cotisationAdd') , 
-    path('cdf/' , cdf , name = 'cdf')
+    path('cdf/' , cdf , name = 'cdf') , 
+    path('usd/' , usd, name = 'usd') , 
 ]

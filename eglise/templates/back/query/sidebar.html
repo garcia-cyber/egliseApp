@@ -37,6 +37,16 @@
                 </ul>
                 </li>
 
+                 <!-- gestion des materiel -->
+                <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="briefcase"></i><span>Materiels</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="">Ajouter Materiel</a></li>
+                    <li><a class="nav-link" href="">Liste des Materiels</a></li>
+                </ul>
+                </li>
+
                  <!-- gestion de finances -->
                 <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
@@ -52,7 +62,7 @@
                   data-feather="briefcase"></i><span>Finance statistique</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{% url 'cdf' %}">CDF</a></li> 
-                    <li><a class="nav-link" href="">USD</a></li>
+                    <li><a class="nav-link" href="{% url 'usd' %}">USD</a></li>
                 </ul>
                 </li>
 
@@ -61,8 +71,8 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="briefcase"></i><span>Membres</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{% url "membreAdd" %}">Ajouter Membre</a></li>
-                    <li><a class="nav-link" href="{% url "membreRead" %}">Liste des membres</a></li>
+                    <li><a class="nav-link" href="{% url 'membreAdd' %}">Ajouter Membre</a></li>
+                    <li><a class="nav-link" href="{% url 'membreRead' %}">Liste des membres</a></li>
                 </ul>
                 </li>
                 <!-- gestion des evenement -->
@@ -72,6 +82,17 @@
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{% url 'evenementAdd' %}">Ajouter Evenement</a></li>
                     <li><a class="nav-link" href="{% url 'evenementRead' %}">Liste des evenements</a></li>
+                </ul>
+                </li>
+
+
+                <!-- gestion des materiel -->
+                <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="briefcase"></i><span>Materiels</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="">Ajouter Materiel</a></li>
+                    <li><a class="nav-link" href="">Liste des Materiels</a></li>
                 </ul>
                 </li>
 
@@ -90,7 +111,7 @@
                   data-feather="briefcase"></i><span>Finance statistique</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{% url 'cdf' %}">CDF</a></li> 
-                    <li><a class="nav-link" href="">USD</a></li>
+                    <li><a class="nav-link" href="{% url 'usd' %}">USD</a></li>
                 </ul>
                 </li>
                 {% endif %}
