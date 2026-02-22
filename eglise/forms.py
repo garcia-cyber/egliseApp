@@ -90,3 +90,18 @@ class EvenementForm(forms.ModelForm):
     #         raise forms.ValidationError("le nom Evenement existe")
 
     #     return nomEvenement
+
+# ======================================
+# cotisation depot 
+# ======================================
+class CotisationForm(forms.ModelForm):
+    class Meta :
+        model = Cotisation 
+        fields = ['cotisation','montant','devise', 'dateCotisation']
+        widgets = {
+            'cotisation' : forms.Select(attrs={'class':'form-control'}) , 
+            'montant' : forms.NumberInput(attrs={'class':'form-control'}) , 
+            'devise' : forms.Select(attrs={'class':'form-control'}) , 
+            'dateCotisation' : forms.DateInput(attrs={'class':'form-control','type':'date'})
+
+        }

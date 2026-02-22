@@ -26,7 +26,7 @@ class CelluleAdmin(admin.ModelAdmin):
 
 @admin.register(Profil)
 class ProfilAdmin(admin.ModelAdmin):
-	list_display = ['user','user__email','fonction','phone','sexeUser'] 
+	list_display = ['user','user__email','fonction','phone','sexeUser','cellule','cellule__province'] 
 
 # =======================================
 #  departement

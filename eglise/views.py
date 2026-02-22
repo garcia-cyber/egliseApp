@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.contrib.auth.models import User
 from .models import * 
+from django.db.models import Sum 
 
 # Create your views here.
 
@@ -214,7 +215,7 @@ def profilAdd(request):
     profil = Profil.objects.filter(user = request.user).first()
     fonction = profil.fonction.nomFonction if profil else None 
 
-    return render(request , 'back/employeUpdate.html',{'fonction':fonction,'form':form, 'msg':msg}) 
+    return render(request , 'back/profilAdd.html',{'fonction':fonction,'form':form, 'msg':msg}) 
 
 # ==================================================================
 #  enregistrement des membres
@@ -291,3 +292,118 @@ def evenementRead(request):
     lst = Evenement.objects.filter(userEvenement = request.user).all()
 
     return render(request , 'back/evenementRead.html' , {'fonction':fonction, 'lst':lst})
+
+# ==================================================================
+#  depot cotisations 
+# ==================================================================
+@login_required()
+def cotisationAdd(request):
+
+    msg = None 
+    if request.method == 'POST':
+        form = CotisationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit = False)
+            if request.user.is_authenticated:
+                user.userCotisation = request.user 
+                user.save()
+                msg = 'depot effectue '
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+
+    form = CotisationForm()
+
+    return render(request , 'back/cotisationAdd.html',{'fonction':fonction, 'form':form , 'msg':msg})
+
+# ======================================================================
+# finance statistique 
+# ======================================================================
+@login_required()
+def cdf(request):
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    # ===============
+    # somme generale
+    # =============== 
+
+    totalA = Cotisation.objects.filter( devise = 'cdf').aggregate(total = Sum('montant'))['total'] or 0
+
+    # ============
+    # offrande 
+    #=============
+
+    offrandeA = Cotisation.objects.filter( devise = 'cdf',cotisation__typeCotisation = 'offrande').aggregate(off = Sum('montant'))['off'] or 0
+
+    # ==================
+    # action de grace 
+    # ==================
+    actionA = Cotisation.objects.filter( devise = 'cdf',cotisation__typeCotisation = 'action de grace').aggregate(action = Sum('montant'))['action'] or 0
+
+
+    # =================
+    # dime 
+    # =================
+    dimeA = Cotisation.objects.filter(devise = 'cdf',cotisation__typeCotisation = 'dime').aggregate(dime = Sum('montant'))['dime'] or 0
+
+    # ================
+    # don 
+    # ================
+    donA = Cotisation.objects.filter(devise = 'cdf',cotisation__typeCotisation = 'don').aggregate(don = Sum('montant'))['don'] or 0
+
+    # ===============
+    # membre 
+    # ===============
+    
+
+    # ===============================  PARTIE CELLULE =========================
+
+    # ===============
+    # somme generale
+    # =============== 
+
+    total = Cotisation.objects.filter(userCotisation = request.user, devise = 'cdf').aggregate(total = Sum('montant'))['total'] or 0
+
+    # ============
+    # offrande 
+    #=============
+
+    offrande = Cotisation.objects.filter(userCotisation = request.user , devise = 'cdf',cotisation__typeCotisation = 'offrande').aggregate(off = Sum('montant'))['off'] or 0
+
+    # ==================
+    # action de grace 
+    # ==================
+    action = Cotisation.objects.filter(userCotisation = request.user , devise = 'cdf',cotisation__typeCotisation = 'action de grace').aggregate(action = Sum('montant'))['action'] or 0
+
+
+    # =================
+    # dime 
+    # =================
+    dime = Cotisation.objects.filter(userCotisation = request.user , devise = 'cdf',cotisation__typeCotisation = 'dime').aggregate(dime = Sum('montant'))['dime'] or 0
+
+    # ================
+    # don 
+    # ================
+    don = Cotisation.objects.filter(userCotisation = request.user , devise = 'cdf',cotisation__typeCotisation = 'don').aggregate(don = Sum('montant'))['don'] or 0
+
+    
+
+
+    context = {
+                'fonction':fonction ,
+                'total':total,
+                'off' : offrande ,
+                'action' : action , 
+                'dime' : dime , 
+                'don': don ,
+                'totalA':totalA,
+                'offA' : offrandeA ,
+                'actionA' : actionA , 
+                'dimeA' : dimeA , 
+                'donA': donA ,
+                }
+
+    return render(request, 'back/cdf.html' , context)
+

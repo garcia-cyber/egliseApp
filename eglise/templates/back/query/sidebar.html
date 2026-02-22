@@ -37,6 +37,25 @@
                 </ul>
                 </li>
 
+                 <!-- gestion de finances -->
+                <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="briefcase"></i><span>Finance</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{% url 'cotisationAdd'%}">Ajouter Un depot</a></li> 
+                    <li><a class="nav-link" href=""></a></li>
+                </ul>
+                </li>
+
+                <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="briefcase"></i><span>Finance statistique</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{% url 'cdf' %}">CDF</a></li> 
+                    <li><a class="nav-link" href="">USD</a></li>
+                </ul>
+                </li>
+
                 {% elif fonction == 'sous-admin'%}
                  <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
@@ -61,8 +80,17 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="briefcase"></i><span>Finance</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="">Ajouter Un depot</a></li>
+                    <li><a class="nav-link" href="{% url 'cotisationAdd'%}">Ajouter Un depot</a></li> 
                     <li><a class="nav-link" href=""></a></li>
+                </ul>
+                </li>
+
+                <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="briefcase"></i><span>Finance statistique</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{% url 'cdf' %}">CDF</a></li> 
+                    <li><a class="nav-link" href="">USD</a></li>
                 </ul>
                 </li>
                 {% endif %}
