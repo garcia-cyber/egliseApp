@@ -105,3 +105,25 @@ class CotisationForm(forms.ModelForm):
             'dateCotisation' : forms.DateInput(attrs={'class':'form-control','type':'date'})
 
         }
+
+# ======================================
+# form materiel
+# ======================================
+class MaterielForm(forms.ModelForm):
+    class Meta:
+        model = Materiel 
+        fields = ['nomMateriel', 'etatMateriel','quantiteMateriel'] 
+        labels = {
+            'nomMateriel' : 'nom du materiel'.capitalize(),
+            'etatMateriel' : 'etat du materiel'.capitalize() , 
+            'quantiteMateriel' : 'quantite du materiel'.capitalize() 
+
+        }
+
+        widgets = {
+
+        'nomMateriel' : forms.TextInput(attrs={'class':'form-control'}),
+        'etatMateriel' : forms.Select(attrs={'class':'form-control'})  , 
+        'quantiteMateriel' : forms.NumberInput(attrs={'class':'form-control'})
+
+        }

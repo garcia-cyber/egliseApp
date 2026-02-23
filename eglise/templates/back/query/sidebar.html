@@ -1,5 +1,5 @@
 {% load static %}
-<div class="main-sidebar sidebar-style-2">
+<div class="main-sidebar  sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{% url "panel" %}"> <img alt="image" src="{% static 'back/assets/img/logo.png'%}" class="header-logo" /> <span
@@ -91,8 +91,8 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                   data-feather="briefcase"></i><span>Materiels</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="">Ajouter Materiel</a></li>
-                    <li><a class="nav-link" href="">Liste des Materiels</a></li>
+                    <li><a class="nav-link" href="{% url 'materielAdd' %}">Ajouter Materiel</a></li>
+                    <li><a class="nav-link" href="{% url 'materielRead' %}">Liste des Materiels</a></li>
                 </ul>
                 </li>
 

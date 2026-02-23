@@ -79,4 +79,14 @@ class TypePermissionAdmin(admin.ModelAdmin):
 class PermissionAdmin(admin.ModelAdmin):
 	list_display = ['permission','userPermission','datePermission']
 
+# =====================================
+# materiel
+# =====================================
+@admin.register(Materiel)
+class MaterielAdmin(admin.ModelAdmin):
+	list_display = ['nomMateriel','etatMateriel','quantiteMateriel','userMateriel','dateRegister']
+
+# ====================================
+#  
+# ====================================
 

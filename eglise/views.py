@@ -95,8 +95,14 @@ def panel(request):
     # ============================= 
     evenement = Evenement.objects.count()
 
+    # =============================
+    #  NOMBRE DES MATERIEL
+    # =============================
+    materiel = Materiel.objects.count()
 
-    # =================== CELLULE NOMBRES ======================
+    # ==========================================================================================================
+    # =========================================== CELLULE NOMBRES ==============================================
+    # ==========================================================================================================
 
     # =============================
     # NOMBRE MEMBRE PAR CELLULE 
@@ -139,6 +145,11 @@ def panel(request):
     # ============================= 
     evenementC = Evenement.objects.filter(userEvenement = request.user).count()
 
+    # =============================
+    #  NOMBRE DES MATERIEL
+    # =============================
+    materielC = Materiel.objects.filter(userMateriel = request.user).count()
+
 
     context = {
         'userCount': userCount ,
@@ -158,7 +169,9 @@ def panel(request):
         'veuve'   : veuve ,
         'veuf' : veuf ,
         'evenement':evenement , 
-        'evenementC' : evenementC
+        'evenementC' : evenementC , 
+        'materielC' : materielC ,
+        'materiel' : materiel ,
         }
     return render(request, 'back/index.html', context) 
 
@@ -497,6 +510,42 @@ def usd(request):
                 }
 
     return render(request, 'back/usd.html' , context) 
+
+
+# =====================================================
+# materiel add 
+# =====================================================
+@login_required()
+def materielAdd(request):
+    msg = None 
+    if request.method == 'POST':
+        form = MaterielForm(request.POST)
+        if form.is_valid():
+            materiel = form.save(commit = False)
+            if request.user.is_authenticated:
+                materiel.userMateriel = request.user 
+                materiel.save()
+                msg = "materiel enregistre"
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    form = MaterielForm()
+    return render(request , 'back/materielAdd.html',{'fonction':fonction , 'form':form , 'msg':msg}) 
+
+# =====================================================
+# materiel read
+# =====================================================
+@login_required()
+def materielRead(request):
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    lst = Materiel.objects.filter(userMateriel = request.user).all()
+
+
+    return render(request, 'back/materielRead.html',{'fonction':fonction,'lst': lst})
 
 
 

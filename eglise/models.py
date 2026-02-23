@@ -166,6 +166,7 @@ class Materiel(models.Model):
     etatMateriel = models.CharField(max_length = 30 , choices = ETATCHOIX, null = True)
     dateRegister = models.DateField(auto_now_add = True)  
     quantiteMateriel = models.IntegerField()
+    userMateriel = models.ForeignKey(User , on_delete = models.CASCADE , null = True) 
 
 
     def __str__(self):
