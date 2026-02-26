@@ -4,7 +4,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.contrib.auth.models import User
 from .models import * 
-from django.db.models import Sum 
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth 
+from django.contrib import messages
+
+
 
 # Create your views here.
 
@@ -151,7 +155,10 @@ def panel(request):
     materielC = Materiel.objects.filter(userMateriel = request.user).count()
 
 
+
+
     context = {
+        
         'userCount': userCount ,
         'fonction':fonction , 
         'membre' : membreCount , 
@@ -547,5 +554,49 @@ def materielRead(request):
 
     return render(request, 'back/materielRead.html',{'fonction':fonction,'lst': lst})
 
+# =======================================================
+# ajoute depense 
+# =======================================================
+@login_required()
+def ajouter_depense(request):
+    if request.method == 'POST':
+        form = DepenseForm(request.POST)
+        if form.is_valid():
+            try:
+                # On lie l'utilisateur connecté avant de sauvegarder
+                depense = form.save(commit=False)
+                depense.userDepense = request.user
+                depense.save()
+                
+                messages.success(request, "La dépense a été enregistrée avec succès.")
+                
 
+            except Exception as e:
+                # Capture l'erreur de validation du modèle (solde insuffisant)
+                messages.error(request, f"Erreur : {e}")
+        else:
+            messages.error(request, "Veuillez corriger les erreurs ci-dessous.")
+    else:
+        form = DepenseForm()
+
+    # --- Optionnel : Calculer les soldes actuels pour l'affichage ---
+    soldes = {}
+    for devise in ['cdf', 'usd']:
+        total_cot = Cotisation.objects.filter(devise=devise, statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_dep = Depense.objects.filter(deviseDepense=devise).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        soldes[devise] = total_cot - total_dep
+
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    context = {
+        'form': form,
+        'solde_cdf': soldes['cdf'],
+        'solde_usd': soldes['usd'],
+        'fonction' : fonction
+    }
+
+    
+
+    return render(request, 'back/depenseAdd.html', context)
 

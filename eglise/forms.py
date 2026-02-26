@@ -4,6 +4,7 @@ from .models import Profil
 from .models import *
 
 
+
 # creation du formulaire d'authentification 
 # ==========================================
 # ==========================================
@@ -126,4 +127,18 @@ class MaterielForm(forms.ModelForm):
         'etatMateriel' : forms.Select(attrs={'class':'form-control'})  , 
         'quantiteMateriel' : forms.NumberInput(attrs={'class':'form-control'})
 
+        }
+
+# ======================================
+# depense form
+# ======================================
+class DepenseForm(forms.ModelForm):
+    class Meta:
+        model = Depense
+        fields = ['motifDepense', 'montantDepense', 'deviseDepense', 'dateDepense']
+        widgets = {
+            'dateDepense': forms.DateInput(attrs={'type': 'date' , 'class': 'form-control'}),
+            'motifDepense' : forms.TextInput(attrs = {'class': 'form-control'}) ,
+            'montantDepense': forms.NumberInput(attrs = {'class': 'form-control'}),
+            'deviseDepense' : forms.Select(attrs = {'class': 'form-control'})  
         }

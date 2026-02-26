@@ -87,6 +87,8 @@ class MaterielAdmin(admin.ModelAdmin):
 	list_display = ['nomMateriel','etatMateriel','quantiteMateriel','userMateriel','dateRegister']
 
 # ====================================
-#  
+#  depense 
 # ====================================
-
+@admin.register(Depense)
+class DepenseAdmin(admin.ModelAdmin):
+	list_display = ['motifDepense', 'montantDepense','userDepense'] 

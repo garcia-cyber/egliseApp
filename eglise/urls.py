@@ -19,5 +19,6 @@ urlpatterns = [
     path('usd/' , usd, name = 'usd') , 
     path('materielAdd/' , materielAdd , name ='materielAdd') , 
     path('materielRead/' , materielRead , name ='materielRead') , 
+    path('ajouter_depense/', ajouter_depense , name = 'ajouter_depense') , 
     
 ]
