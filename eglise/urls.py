@@ -20,5 +20,7 @@ urlpatterns = [
     path('materielAdd/' , materielAdd , name ='materielAdd') , 
     path('materielRead/' , materielRead , name ='materielRead') , 
     path('ajouter_depense/', ajouter_depense , name = 'ajouter_depense') , 
+    path('cdf_depense/',cdf_depense , name ='cdf_depense') , 
+    path('usd_depense/',usd_depense , name ='usd_depense') , 
     
 ]

@@ -604,4 +604,28 @@ def ajouter_depense(request):
 # =======================================================
 # statistique de depense en cdf
 # =======================================================
+@login_required()
+def cdf_depense(request):
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    cdf = Depense.objects.filter(userDepense = request.user , deviseDepense = 'cdf').aggregate(cdf = Sum('montantDepense'))['cdf'] or 0
+
+    cdfA = Depense.objects.filter( deviseDepense = 'cdf').aggregate(cdf = Sum('montantDepense'))['cdf'] or 0
+
+    return render(request,'back/cdf_depense.html' , {'fonction':fonction , 'cdf':cdf , 'cdfA' : cdfA})
+
+# =======================================================
+# statistique de depense en cdf
+# =======================================================
+@login_required()
+def usd_depense(request):
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None 
+
+    usd = Depense.objects.filter(userDepense = request.user , deviseDepense = 'usd').aggregate(usd = Sum('montantDepense'))['usd'] or 0
+
+    usdA = Depense.objects.filter(deviseDepense = 'usd').aggregate(usd = Sum('montantDepense'))['usd'] or 0
+
+    return render(request,'back/usd_depense.html' , {'fonction':fonction , 'usd':usd , 'usdA' : usdA}) 
 
