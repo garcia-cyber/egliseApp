@@ -197,34 +197,114 @@ class Depense(models.Model):
         return self.motifDepense 
 
 
-
     def clean(self):
-        # 1. Récupérer le total des cotisations pour la devise choisie
+    # 0. SÉCURITÉ : Vérifier si l'utilisateur et la devise sont renseignés
+    # Cela évite l'erreur 'RelatedObjectDoesNotExist' si le formulaire est incomplet
+        if not hasattr(self, 'userDepense') or self.userDepense is None:
+            return  # On sort, les validateurs de base de Django feront le travail
+
+        if not self.deviseDepense or not self.montantDepense:
+            return
+
+    # 1. Récupérer le total des cotisations payées par cet utilisateur
         total_cotisations = Cotisation.objects.filter(
+            userCotisation=self.userDepense,
             devise=self.deviseDepense,
-            statut='oui' # On ne compte que ce qui est payé
+            statut='oui'
         ).aggregate(Sum('montant'))['montant__sum'] or 0
 
-        # 2. Récupérer le total des dépenses déjà effectuées dans cette devise
+    # 2. Récupérer le total des dépenses de cet utilisateur
         total_depenses_existantes = Depense.objects.filter(
-            deviseDepense=self.deviseDepense
+            userDepense=self.userDepense,
+            deviseDepense=self.deviseDepense 
         ).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
 
-        # Si on est en train de modifier une dépense existante, 
-        # il ne faut pas se compter soi-même dans le calcul
+    # Si c'est une modification (pk existe), on exclut la valeur actuelle du calcul
         if self.pk:
-            depense_actuelle = Depense.objects.get(pk=self.pk)
-            total_depenses_existantes -= depense_actuelle.montantDepense
+            depense_actuelle = Depense.objects.filter(pk=self.pk).first()
+            if depense_actuelle:
+                total_depenses_existantes -= depense_actuelle.montantDepense
 
-        # 3. Calculer le solde disponible
+    # 3. Calculer le solde disponible
         solde_disponible = total_cotisations - total_depenses_existantes
 
-        # 4. Vérification
+    # 4. Vérification finale
         if self.montantDepense > solde_disponible:
-            raise ValidationError(
-                f"Opération impossible ! Le montant de la dépense ({self.montantDepense} {self.deviseDepense}) "
-                f"est supérieur au solde disponible ({solde_disponible} {self.deviseDepense})."
-            )
+            raise ValidationError({
+                'montantDepense': f"Solde insuffisant pour {self.userDepense} ! "
+                              f"Disponible : {solde_disponible} {self.deviseDepense}. "
+                              f"Demandé : {self.montantDepense} {self.deviseDepense}."
+            })
+
+
+    # def clean(self):
+    #     # 1. Récupérer le total des cotisations pour la devise choisie
+    #     total_cotisations = Cotisation.objects.filter(
+    #         userCotisation=self.userDepense,
+    #         devise=self.deviseDepense,
+    #         statut='oui' # On ne compte que ce qui est payé
+    #     ).aggregate(Sum('montant'))['montant__sum'] or 0
+
+    #     # 2. Récupérer le total des dépenses déjà effectuées dans cette devise
+    #     total_depenses_existantes = Depense.objects.filter(
+    #         userDepense=self.userDepense,
+    #         deviseDepense=self.deviseDepense 
+           
+    #     ).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+
+    #     # Si on est en train de modifier une dépense existante, 
+    #     # il ne faut pas se compter soi-même dans le calcul
+    #     if self.pk:
+    #         depense_actuelle = Depense.objects.filter(pk=self.pk).first()
+    #         if depense_actuelle:
+
+    #             total_depenses_existantes -= depense_actuelle.montantDepense
+            
+
+    #     # 3. Calculer le solde disponible
+    #     solde_disponible = total_cotisations - total_depenses_existantes
+
+    #     # 4. Vérification
+    #     if self.montantDepense > solde_disponible:
+    #         raise ValidationError(
+    #             f"Solde insuffisant pour {self.userDepense} ! "
+    #             f"Opération impossible ! Le montant de la dépense ({self.montantDepense} {self.deviseDepense}) "
+    #             f"est supérieur au solde disponible ({solde_disponible} {self.deviseDepense})."
+    #         )
+
+
+    # ============================
+    # def clean(self):
+    # # 1. Récupérer le total des cotisations de CET utilisateur pour CETTE devise
+    # total_cotisations = Cotisation.objects.filter(
+    #     userCotisation=self.userDepense, # On filtre par l'utilisateur lié à la dépense
+    #     devise=self.deviseDepense,
+    #     statut='oui'
+    # ).aggregate(Sum('montant'))['montant__sum'] or 0
+
+    # # 2. Récupérer le total des dépenses déjà effectuées par CET utilisateur dans CETTE devise
+    # total_depenses_existantes = Depense.objects.filter(
+    #     userDepense=self.userDepense,
+    #     deviseDepense=self.deviseDepense 
+    # ).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+
+    # # Soustraire la dépense actuelle si c'est une modification (pour éviter l'auto-blocage)
+    # if self.pk:
+    #     # On utilise filter().first() pour éviter une requête supplémentaire si l'objet n'est pas trouvé
+    #     depense_actuelle = Depense.objects.filter(pk=self.pk).first()
+    #     if depense_actuelle:
+    #         total_depenses_existantes -= depense_actuelle.montantDepense
+
+    # # 3. Calculer le solde disponible pour cet utilisateur précis
+    # solde_disponible = total_cotisations - total_depenses_existantes
+
+    # # 4. Vérification finale
+    # if self.montantDepense > solde_disponible:
+    #     raise ValidationError(
+    #         f"Solde insuffisant pour {self.userDepense} ! "
+    #         f"Disponible : {solde_disponible} {self.deviseDepense}. "
+    #         f"Tentative de dépense : {self.montantDepense} {self.deviseDepense}."
+    #     )
 
     def save(self, *args, **kwargs):
         # On force l'exécution de clean() avant de sauvegarder

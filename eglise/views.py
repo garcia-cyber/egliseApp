@@ -582,8 +582,8 @@ def ajouter_depense(request):
     # --- Optionnel : Calculer les soldes actuels pour l'affichage ---
     soldes = {}
     for devise in ['cdf', 'usd']:
-        total_cot = Cotisation.objects.filter(devise=devise, statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
-        total_dep = Depense.objects.filter(deviseDepense=devise).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        total_cot = Cotisation.objects.filter(devise=devise, userCotisation = request.user,statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_dep = Depense.objects.filter(deviseDepense=devise , userDepense = request.user).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
         soldes[devise] = total_cot - total_dep
 
     profil = Profil.objects.filter(user = request.user).first()
@@ -599,4 +599,9 @@ def ajouter_depense(request):
     
 
     return render(request, 'back/depenseAdd.html', context)
+
+
+# =======================================================
+# statistique de depense en cdf
+# =======================================================
 
