@@ -59,17 +59,38 @@ class ProfilForm(forms.ModelForm):
 class MembreForm(forms.ModelForm):
     class Meta :
         model = Membre 
-        fields = ['noms','sexe','etatCivil','phone','adresse','province','departement' ]
+        fields = ['noms','sexe','etatCivil','phone','adresse','province','departement','commune' ]
 
         widgets = {
             'noms' : forms.TextInput(attrs={'class':'form-control'}) ,
             'sexe' : forms.Select(attrs={'class':'form-control'}) ,
             'etatCivil' : forms.Select(attrs={'class':'form-control'}) ,
             'phone' : forms.NumberInput(attrs={'class':'form-control'}) ,
+            'commune' : forms.Select(attrs={'class':'form-control'}) ,
             'adresse' : forms.TextInput(attrs={'class':'form-control'}) ,
             'province' : forms.TextInput(attrs={'class':'form-control'}) ,
             'departement' : forms.Select(attrs={'class':'form-control'}) ,
         }
+
+# ===========================================================
+# form membreUpdate
+# ===========================================================
+class MembreUpdate(forms.ModelForm):
+    class Meta:
+        model = Membre 
+        fields = ['noms','sexe','etatCivil','phone','adresse','province','departement' ,'commune']
+
+        widgets = {
+            'noms' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'sexe' : forms.Select(attrs={'class':'form-control'}) ,
+            'etatCivil' : forms.Select(attrs={'class':'form-control'}) ,
+            'phone' : forms.NumberInput(attrs={'class':'form-control'}) ,
+            'commune' : forms.Select(attrs={'class':'form-control'}) ,
+            'adresse' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'province' : forms.TextInput(attrs={'class':'form-control'}) ,
+            'departement' : forms.Select(attrs={'class':'form-control'}) ,
+        }
+
 
 # ====================================
 # evenement form 

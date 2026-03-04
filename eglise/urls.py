@@ -22,5 +22,6 @@ urlpatterns = [
     path('ajouter_depense/', ajouter_depense , name = 'ajouter_depense') , 
     path('cdf_depense/',cdf_depense , name ='cdf_depense') , 
     path('usd_depense/',usd_depense , name ='usd_depense') , 
+    path('membreUpdate/<int:id>/',membreUpdate , name = 'membreUpdate'),
     
 ]

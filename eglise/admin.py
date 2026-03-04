@@ -41,7 +41,7 @@ class DepartementAdmin(admin.ModelAdmin):
 # =======================================
 @admin.register(Membre)
 class MembreAdmin(admin.ModelAdmin):
-	list_display = ['noms','sexe','etatCivil','phone','adresse','province','departement','typeM','deces','userMembre']
+	list_display = ['noms','sexe','etatCivil','phone','adresse','province','departement','commune','typeM','deces','userMembre']
 
 # =======================================
 #  type de cotisation  
@@ -92,3 +92,9 @@ class MaterielAdmin(admin.ModelAdmin):
 @admin.register(Depense)
 class DepenseAdmin(admin.ModelAdmin):
 	list_display = ['motifDepense', 'montantDepense','userDepense'] 
+# ===================================
+# commune 
+# ===================================
+@admin.register(Commune)
+class CommuneAdmin(admin.ModelAdmin):
+	list_display = ['id','nomCommune']

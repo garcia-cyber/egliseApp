@@ -410,6 +410,25 @@ def cdf(request):
 
     
 
+    # ===========================================================
+    # ===========================================================
+    # somme entre cotisations et depense 
+    cotisation = Cotisation.objects.filter(userCotisation  = request.user , devise = 'cdf').aggregate(cot = Sum('montant'))['cot'] or 0 
+    depense    = Depense.objects.filter(userDepense = request.user , deviseDepense = 'cdf').aggregate(dep = Sum('montantDepense'))['dep'] or 0
+
+    soldes = {}
+    for devise in ['cdf', 'usd']:
+        total_cot = Cotisation.objects.filter(devise=devise, userCotisation = request.user,statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_dep = Depense.objects.filter(deviseDepense=devise , userDepense = request.user).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        soldes[devise] = total_cot - total_dep
+
+    soldesA = {}
+    for deviseA in ['cdf', 'usd']:
+        total_cotA = Cotisation.objects.filter(devise=devise, statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_depA = Depense.objects.filter(deviseDepense=devise ).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        soldesA[deviseA] = total_cotA - total_depA 
+
+
 
     context = {
                 'fonction':fonction ,
@@ -423,7 +442,12 @@ def cdf(request):
                 'actionA' : actionA , 
                 'dimeA' : dimeA , 
                 'donA': donA ,
-                }
+                'depense': depense , 
+                'cotisation ':cotisation ,
+                'solde_cdf': soldes['cdf'],
+                'solde_usd': soldes['usd'],
+                'solde_cdfA': soldesA['cdf'],
+                                }
 
     return render(request, 'back/cdf.html' , context)
 
@@ -499,7 +523,18 @@ def usd(request):
     # ================
     don = Cotisation.objects.filter(userCotisation = request.user , devise = 'usd',cotisation__typeCotisation = 'don').aggregate(don = Sum('montant'))['don'] or 0
 
-    
+    soldes = {}
+    for devise in ['cdf', 'usd']:
+        total_cot = Cotisation.objects.filter(devise=devise, userCotisation = request.user,statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_dep = Depense.objects.filter(deviseDepense=devise , userDepense = request.user).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        soldes[devise] = total_cot - total_dep 
+
+
+    soldesA = {}
+    for deviseA in ['cdf', 'usd']:
+        total_cotA = Cotisation.objects.filter(devise=devise, statut='oui').aggregate(Sum('montant'))['montant__sum'] or 0
+        total_depA = Depense.objects.filter(deviseDepense=devise ).aggregate(Sum('montantDepense'))['montantDepense__sum'] or 0
+        soldesA[deviseA] = total_cotA - total_depA 
 
 
     context = {
@@ -514,6 +549,8 @@ def usd(request):
                 'actionA' : actionA , 
                 'dimeA' : dimeA , 
                 'donA': donA ,
+                'solde_usd': soldes['usd'], 
+                'solde_usdA': soldesA['usd'], 
                 }
 
     return render(request, 'back/usd.html' , context) 
@@ -628,4 +665,22 @@ def usd_depense(request):
     usdA = Depense.objects.filter(deviseDepense = 'usd').aggregate(usd = Sum('montantDepense'))['usd'] or 0
 
     return render(request,'back/usd_depense.html' , {'fonction':fonction , 'usd':usd , 'usdA' : usdA}) 
+
+
+# ============================================================
+# membre modfication
+# ============================================================
+@login_required()
+def membreUpdate(request,id):
+    mbr = Membre.objects.get(id = id )
+    if request.method == 'POST':
+        form = MembreUpdate(request.POST , instance = mbr )
+
+
+
+    form = MembreUpdate(instance = mbr) 
+    profil = Profil.objects.filter(user = request.user).first()
+    fonction = profil.fonction.nomFonction if profil else None
+
+    return render(request, 'back/membreUpdate.html',{'fonction':fonction ,'form': form}) 
 
